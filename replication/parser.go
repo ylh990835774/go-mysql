@@ -206,6 +206,11 @@ func (p *BinlogParser) SetFlavor(flavor string) {
 	p.flavor = flavor
 }
 
+// ParseHeader 支持外部调用
+func (p *BinlogParser) ParseHeader(data []byte) (*EventHeader, error) {
+	return p.parseHeader(data)
+}
+
 func (p *BinlogParser) parseHeader(data []byte) (*EventHeader, error) {
 	h := new(EventHeader)
 	err := h.Decode(data)
@@ -214,6 +219,11 @@ func (p *BinlogParser) parseHeader(data []byte) (*EventHeader, error) {
 	}
 
 	return h, nil
+}
+
+// ParseEvent 支持外部调用
+func (p *BinlogParser) ParseEvent(h *EventHeader, data []byte, rawData []byte) (Event, error) {
+	return p.parseEvent(h, data, rawData)
 }
 
 func (p *BinlogParser) parseEvent(h *EventHeader, data []byte, rawData []byte) (Event, error) {
